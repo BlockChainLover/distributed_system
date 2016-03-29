@@ -1,13 +1,12 @@
 package commands;
 
-public class DfsRemoveNode extends Command {
-	
-	
-	public DfsRemoveNode(String args[]){
+public class DfsCp extends Command {
+
+	public DfsCp(String args[]){
 		String arguments[];
 		int ind = 0;
 		if(args.length > 0)
-			if(args[0].equals("remove")){
+			if(args[0].equals("dfs-cp")){
 				ind = 1;
 			}
 		arguments = new String[args.length-ind];
@@ -16,7 +15,6 @@ public class DfsRemoveNode extends Command {
 		}
 		this.setArgs(arguments);
 	}
-	
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub
