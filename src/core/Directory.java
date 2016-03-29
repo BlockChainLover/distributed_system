@@ -2,25 +2,32 @@ package core;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.FileSystemException;
-
-import javax.annotation.processing.FilerException;
+import java.nio.file.NotDirectoryException;
 
 public class Directory {
 	private File root;
 	
-	public Directory(String path){
+	public Directory(String path) throws NotDirectoryException{
 		root = new File(path);
+		if(root.exists() && root.isFile())
+			throw new NotDirectoryException("");
+		else if(!root.exists())
+			root.mkdir();
 	}
 	
-	public boolean putFile(String path, File file){
-		
-		return true;
+	public boolean putFile(String path, File file) throws IOException{
+		File dest = new File(root, path);
+		return copyFile(file.getAbsolutePath(), dest.getAbsolutePath());
+	}
+	
+	public boolean createDir(String path){
+		File dir = new File(root, path);
+		return dir.mkdirs();
 	}
 	
 	public boolean deleteFile(String path) throws FileSystemException{
@@ -70,8 +77,16 @@ public class Directory {
 		return true;
 	}
 	
+	public boolean copyDirectory(String source, String destination){
+		return true;
+	}
+	
 	public boolean moveFile(String source, String dest) throws IOException{
 		boolean tmp = copyFile(source, dest);
 		return tmp && deleteFile(source);
+	}
+	
+	public boolean moveDirectory(String source, String dest) {
+		return true;
 	}
 }
