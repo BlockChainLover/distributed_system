@@ -1,5 +1,11 @@
 package commands;
 
+/**
+ * dfs-removeNode NODE_ID --> stop the node wiitch id = NODE_ID
+ * dfs-removeNode -r NODE_ID --> stop the node witch id = NODE_ID and remove it from node list
+ * @author nicolas
+ *
+ */
 public class DfsRemoveNode extends Command {
 	
 	

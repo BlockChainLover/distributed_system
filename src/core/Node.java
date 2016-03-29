@@ -42,7 +42,7 @@ public class Node implements Runnable {
 	}
 	
 	public void stop(){
-		System.out.println("Stop the Node "+id);
+		System.err.println("Hard stop the Node "+id);
 		t.stop();
 	}
 	
@@ -55,5 +55,13 @@ public class Node implements Runnable {
 				System.err.println("Node "+id+" crashed ! ["+e.getLocalizedMessage()+"]");
 			}
 		}
+	}
+
+	public long getBurden() {
+		return dir.getBurden();
+	}
+	
+	public String toString(){
+		return "Node "+id+", size = "+getBurden();
 	}
 }

@@ -1,5 +1,11 @@
 package commands;
 
+/**
+ * dfs-createNode --> create a new node
+ * dfs-createNode DIR_PATH --> create a new node and link it to the specified dir
+ * @author nicolas
+ *
+ */
 public class DfsCreateNode extends Command {
 
 	public DfsCreateNode(String args[]){

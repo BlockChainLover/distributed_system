@@ -1,5 +1,11 @@
 package commands;
 
+/**
+ * dfs-lsNode --> list all runnning nodes
+ * dfs-lsNode -l --> list all running nodes with their burden, sort by burden
+ * @author nicolas
+ *
+ */
 public class DfsLsNode extends Command {
 
 	public DfsLsNode(String args[]){
