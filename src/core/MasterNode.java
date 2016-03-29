@@ -9,9 +9,11 @@ public class MasterNode {
 	
 	public MasterNode(){
 		
+		System.out.println("Master Node created.");
 	}
 	
 	public void refreshMap(){
+		System.out.println("Begin nodes scanning.");
 		List<Node> nodes = NodeHandler.getInstance().getNodes();
 	}
 }

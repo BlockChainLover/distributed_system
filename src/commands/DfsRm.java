@@ -7,7 +7,7 @@ public class DfsRm extends Command {
 		String arguments[];
 		int ind = 0;
 		if(args.length > 0)
-			if(args[0].equals("dfs-rm")){
+			if(args[0].equals(getCommandId())){
 				ind = 1;
 			}
 		arguments = new String[args.length-ind];

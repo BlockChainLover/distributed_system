@@ -8,7 +8,7 @@ public class DfsRemoveNode extends Command {
 		String arguments[];
 		int ind = 0;
 		if(args.length > 0)
-			if(args[0].equals("remove")){
+			if(args[0].equals(getCommandId())){
 				ind = 1;
 			}
 		arguments = new String[args.length-ind];
