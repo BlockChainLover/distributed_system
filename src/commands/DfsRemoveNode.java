@@ -4,6 +4,7 @@ public class DfsRemoveNode extends Command {
 	
 	
 	public DfsRemoveNode(String args[]){
+		setCommandId("dfs-removeNode");
 		String arguments[];
 		int ind = 0;
 		if(args.length > 0)

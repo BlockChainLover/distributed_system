@@ -4,6 +4,7 @@ public class DfsMv extends Command {
 
 	
 	public DfsMv(String args[]){
+		setCommandId("dfs-mv");
 		String arguments[];
 		int ind = 0;
 		if(args.length > 0)

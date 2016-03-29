@@ -27,6 +27,6 @@ public class NodeHandler implements Runnable {
 	}
 
 	public void executeCommand(Command c) {
-		
+		System.out.println("Execute the command "+c.getCommandId());
 	}
 }
