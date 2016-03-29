@@ -66,6 +66,7 @@ public class Directory {
 	public boolean copyFile(File src, File dest) throws IOException {
 		InputStream is = null;
 		OutputStream os = null;
+		src.getParentFile().mkdirs();
 
 		is = new FileInputStream(src);
 		os = new FileOutputStream(dest);
