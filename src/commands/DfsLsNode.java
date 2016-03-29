@@ -1,5 +1,7 @@
 package commands;
 
+import core.MasterNode;
+
 /**
  * dfs-lsNode --> list all runnning nodes
  * dfs-lsNode -l --> list all running nodes with their burden, sort by burden
@@ -22,11 +24,10 @@ public class DfsLsNode extends Command {
 		}
 		this.setArgs(arguments);
 	}
-
 	@Override
-	public void action() {
+	public void action(MasterNode masterNode) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

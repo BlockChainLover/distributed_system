@@ -1,5 +1,7 @@
 package commands;
 
+import core.MasterNode;
+
 /**
  * dfs-createNode --> create a new node
  * dfs-createNode DIR_PATH --> create a new node and link it to the specified dir
@@ -22,10 +24,10 @@ public class DfsCreateNode extends Command {
 		}
 		this.setArgs(arguments);
 	}
-	
 	@Override
-	public void action() {
-
+	public void action(MasterNode masterNode) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

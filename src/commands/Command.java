@@ -10,7 +10,7 @@ public abstract class Command {
 	
 	private String args[];
 	
-	public abstract void action(List<Node> nodes, MasterNode masterNode);
+	public abstract void action(MasterNode masterNode);
 
 	public String getCommandId() {
 		return commandId;

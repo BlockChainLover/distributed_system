@@ -33,6 +33,14 @@ public class Node implements Runnable {
 		t.start();
 	}
 	
+	public Directory getDirectory(){
+		return dir;
+	}
+	
+	public long getBurden() {
+		return dir.getBurden();
+	}
+	
 	public String getId(){
 		return id;
 	}
@@ -57,9 +65,7 @@ public class Node implements Runnable {
 		}
 	}
 
-	public long getBurden() {
-		return dir.getBurden();
-	}
+
 	
 	public String toString(){
 		return "Node "+id+", size = "+getBurden();

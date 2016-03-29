@@ -30,7 +30,7 @@ public class DfsRemoveNode extends Command {
 	}
 
 	@Override
-	public void action(List<Node> nodes, MasterNode masterNode) {
+	public void action(MasterNode masterNode) {
 		// TODO Auto-generated method stub
 		
 	}

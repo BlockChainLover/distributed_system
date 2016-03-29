@@ -1,5 +1,7 @@
 package commands;
 
+import core.MasterNode;
+
 public class DfsMv extends Command {
 
 	
@@ -17,11 +19,10 @@ public class DfsMv extends Command {
 		}
 		this.setArgs(arguments);
 	}
-	
 	@Override
-	public void action() {
+	public void action(MasterNode masterNode) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

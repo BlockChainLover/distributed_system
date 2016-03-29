@@ -198,7 +198,7 @@ public class NodeHandler implements Runnable {
 			break;
 		}
 
-		c.action(nodes, masterNode);
+		c.action(masterNode);
 	}
 
 }

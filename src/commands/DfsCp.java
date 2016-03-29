@@ -1,5 +1,7 @@
 package commands;
 
+import core.MasterNode;
+
 public class DfsCp extends Command {
 
 	public DfsCp(String args[]){
@@ -16,10 +18,13 @@ public class DfsCp extends Command {
 		}
 		this.setArgs(arguments);
 	}
-	@Override
-	public void action() {
-		// TODO Auto-generated method stub
 
+	@Override
+	public void action(MasterNode masterNode) {
+		// TODO Auto-generated method stub
+		
 	}
+
+	
 
 }

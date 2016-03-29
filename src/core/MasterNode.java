@@ -10,7 +10,7 @@ public class MasterNode {
 	private int replicationRate = 2;
 	
 	public MasterNode(){
-		
+		map = new HashMap<>();
 		System.out.println("Master Node created.");
 	}
 	

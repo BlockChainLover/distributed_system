@@ -1,5 +1,7 @@
 package commands;
 
+import core.MasterNode;
+
 public class DfsLs extends Command {
 
 	public DfsLs(String args[]){
@@ -18,9 +20,9 @@ public class DfsLs extends Command {
 	}
 	
 	@Override
-	public void action() {
+	public void action(MasterNode masterNode) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }
