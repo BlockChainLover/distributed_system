@@ -141,9 +141,9 @@ public class NodeHandler implements Runnable {
 			switch (c.getArgs()[0]) {
 			case "-l":
 				list = getNodesByLoad();
-				System.out.println(" --Node-- \t --Size--");
+				System.out.println(" -Node-\t-Size- \t\t -Running--");
 				for (Node n : list) {
-					System.out.println(" node" + n.getId() + "\t " + n.getBurden() + " Bytes");
+					System.out.println(" node" + n.getId() + "\t " + n.getBurden() + " B \t "+n.isAlive());
 				}
 				break;
 			default:
