@@ -3,6 +3,7 @@ package commands;
 public class DfsRm extends Command {
 
 	public DfsRm(String args[]){
+		setCommandId("dfs-rm");
 		String arguments[];
 		int ind = 0;
 		if(args.length > 0)

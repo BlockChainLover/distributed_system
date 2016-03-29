@@ -3,6 +3,7 @@ package commands;
 public class DfsCreateNode extends Command {
 
 	public DfsCreateNode(String args[]){
+		setCommandId("dfs-createNode");
 		String arguments[];
 		int ind = 0;
 		if(args.length > 0)

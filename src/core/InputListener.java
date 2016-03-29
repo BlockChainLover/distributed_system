@@ -31,9 +31,16 @@ public class InputListener implements Runnable{
 	}
 
 	public void run() {
+		System.out.println("Start the inputListener.");
 		while(true){
 			String s = sc.nextLine();
 			CommandHandler.getInstance().processCommand(s);
+		}
+	}
+
+	public void start() {
+		if(!thread.isAlive()){
+			thread.start();
 		}
 	}
 	

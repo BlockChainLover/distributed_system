@@ -3,6 +3,7 @@ package commands;
 public class DfsLs extends Command {
 
 	public DfsLs(String args[]){
+		setCommandId("dfs-ls");
 		String arguments[];
 		int ind = 0;
 		if(args.length > 0)

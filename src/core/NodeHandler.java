@@ -12,7 +12,8 @@ public class NodeHandler implements Runnable {
 	private List<MasterNode> masterNodes = new ArrayList<MasterNode>();
 	
 	private NodeHandler(){
-		
+		//create master Node
+		masterNodes.add(new MasterNode());
 	}
 	
 	public static NodeHandler getInstance(){
@@ -21,12 +22,19 @@ public class NodeHandler implements Runnable {
 		return instance;
 	}
 
-	public void run() {
-		// TODO Auto-generated method stub
+	public void addNode(){
 		
+	}
+	
+	public void run() {
+		//check if nodes crashed bandicoot
 	}
 
 	public void executeCommand(Command c) {
-		
+		System.out.println("Execute the command "+c.getCommandId());
+	}
+
+	public List<Node> getNodes() {
+		return nodes;
 	}
 }

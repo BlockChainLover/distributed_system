@@ -3,6 +3,7 @@ package commands;
 public class DfsCp extends Command {
 
 	public DfsCp(String args[]){
+		setCommandId("dfs-cp");
 		String arguments[];
 		int ind = 0;
 		if(args.length > 0)
