@@ -1,4 +1,4 @@
-package core;
+package commands;
 
 public abstract class Command {
 	private String commandId;

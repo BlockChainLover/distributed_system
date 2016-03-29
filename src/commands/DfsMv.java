@@ -1,6 +1,6 @@
-package core;
+package commands;
 
-public class DfsCreateNode extends Command {
+public class DfsMv extends Command {
 
 	@Override
 	public void action() {

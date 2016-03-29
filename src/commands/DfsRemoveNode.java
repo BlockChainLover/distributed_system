@@ -1,6 +1,6 @@
-package core;
+package commands;
 
-public class DfsLs extends Command {
+public class DfsRemoveNode extends Command {
 
 	@Override
 	public void action() {

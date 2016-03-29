@@ -1,6 +1,6 @@
-package core;
+package commands;
 
-public class DfsRm extends Command {
+public class DfsLs extends Command {
 
 	@Override
 	public void action() {
