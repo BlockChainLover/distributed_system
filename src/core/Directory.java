@@ -14,7 +14,7 @@ public class Directory {
 	
 	public Directory(String path) throws NotDirectoryException{
 		root = new File(path);
-		if(root.exists() && root.isFile())
+		if(root.isFile())
 			throw new NotDirectoryException("");
 		else if(!root.exists())
 			root.mkdir();
