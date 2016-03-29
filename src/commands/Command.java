@@ -1,11 +1,16 @@
 package commands;
 
+import java.util.List;
+
+import core.MasterNode;
+import core.Node;
+
 public abstract class Command {
 	private String commandId;
 	
 	private String args[];
 	
-	public abstract void action();
+	public abstract void action(List<Node> nodes, MasterNode masterNode);
 
 	public String getCommandId() {
 		return commandId;

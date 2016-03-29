@@ -1,5 +1,10 @@
 package commands;
 
+import java.util.List;
+
+import core.MasterNode;
+import core.Node;
+
 /**
  * dfs-removeNode NODE_ID --> stop the node wiitch id = NODE_ID
  * dfs-removeNode -r NODE_ID --> stop the node witch id = NODE_ID and remove it from node list
@@ -23,11 +28,11 @@ public class DfsRemoveNode extends Command {
 		}
 		this.setArgs(arguments);
 	}
-	
-	@Override
-	public void action() {
-		// TODO Auto-generated method stub
 
+	@Override
+	public void action(List<Node> nodes, MasterNode masterNode) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

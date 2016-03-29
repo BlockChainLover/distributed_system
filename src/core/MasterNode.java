@@ -5,13 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MasterNode {
-	private HashMap<String, ArrayList<String>> map;
+	private HashMap<String, ArrayList<Node>> map;
 	
 	private int replicationRate = 2;
 	
 	public MasterNode(){
 		
 		System.out.println("Master Node created.");
+	}
+	
+	public HashMap<String, ArrayList<Node>> getMap(){
+		return map;
+	}
+	
+	public int getReplicationRate(){
+		return replicationRate;
 	}
 	
 	public void refreshMap(){

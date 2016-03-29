@@ -11,11 +11,11 @@ public class NodeHandler implements Runnable {
 	private static NodeHandler instance;
 
 	private List<Node> nodes = new ArrayList<Node>();
-	private List<MasterNode> masterNodes = new ArrayList<MasterNode>();
+	private MasterNode masterNode;
 
 	private NodeHandler() {
 		// create master Node
-		masterNodes.add(new MasterNode());
+		masterNode = new MasterNode();
 	}
 
 	public static NodeHandler getInstance() {
@@ -198,7 +198,7 @@ public class NodeHandler implements Runnable {
 			break;
 		}
 
-		c.action();
+		c.action(nodes, masterNode);
 	}
 
 }
