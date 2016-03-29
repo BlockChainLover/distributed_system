@@ -10,7 +10,10 @@ import java.nio.file.FileSystemException;
 import java.nio.file.NotDirectoryException;
 
 public class Directory {
+	
 	private File root;
+	
+	private long burden = 0;
 	
 	public Directory(String path) throws NotDirectoryException{
 		root = new File(path);
@@ -35,6 +38,7 @@ public class Directory {
 		boolean res = file.delete();
 		if(!res)
 			throw new FileSystemException("Can't delete : "+file.getName());
+		burden =  root.getTotalSpace();
 		return true;
 	}
 	
@@ -74,6 +78,7 @@ public class Directory {
 	        is.close();
 	        os.close();
 	    }
+	    burden =  root.getTotalSpace();
 		return true;
 	}
 	
@@ -88,5 +93,9 @@ public class Directory {
 	
 	public boolean moveDirectory(String source, String dest) {
 		return true;
+	}
+	
+	public long getBurden(){
+		return burden;
 	}
 }

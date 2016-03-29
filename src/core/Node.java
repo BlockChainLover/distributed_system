@@ -56,6 +56,4 @@ public class Node implements Runnable {
 			}
 		}
 	}
-
-
 }

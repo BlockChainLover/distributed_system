@@ -24,6 +24,11 @@ public class NodeHandler implements Runnable {
 		return instance;
 	}
 
+	/**
+	 *  Finished
+	 * @param c
+	 * @throws NotDirectoryException
+	 */
 	public void addNode(Command c) throws NotDirectoryException {
 		//check if directory is specified
 		String[] args = c.getArgs();
@@ -68,6 +73,15 @@ public class NodeHandler implements Runnable {
 		}
 	}
 	
+	public List<Node> getNodesByLoad(){
+		List<Node> ns = new ArrayList<Node>();
+		
+		while(ns.size() != nodes.size()){
+			
+		}
+		return ns;
+	}
+	
 	public Node getNodeById(String id){
 		Node n = null;
 		for(Node node : nodes){
@@ -81,7 +95,7 @@ public class NodeHandler implements Runnable {
 	public void run() {
 		// check if nodes crashed bandicoot
 	}
-
+	
 	public void executeCommand(Command c) {
 		System.out.println("Execute the command " + c.getCommandId());
 		switch (c.getCommandId()) {

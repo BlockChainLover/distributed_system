@@ -7,6 +7,8 @@ import java.util.List;
 public class MasterNode {
 	private HashMap<String, ArrayList<String>> map;
 	
+	private int replicationRate = 2;
+	
 	public MasterNode(){
 		
 		System.out.println("Master Node created.");
