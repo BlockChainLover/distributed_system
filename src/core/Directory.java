@@ -38,7 +38,7 @@ public class Directory {
 		boolean res = file.delete();
 		if (!res)
 			throw new FileSystemException("Can't delete : " + file.getName());
-		burden = root.getTotalSpace();
+		burden = getFolderSize(root);
 		return true;
 	}
 
@@ -76,8 +76,7 @@ public class Directory {
 		}
 		is.close();
 		os.close();
-
-		burden = root.getTotalSpace();
+		burden = getFolderSize(root);
 		return true;
 	}
 
@@ -96,5 +95,17 @@ public class Directory {
 
 	public long getBurden() {
 		return burden;
+	}
+	
+	public static long getFolderSize(File dir) {
+	    long size = 0;
+	    for (File file : dir.listFiles()) {
+	        if (file.isFile()) {
+	            // System.out.println(file.getName() + " " + file.length());
+	            size += file.length();
+	        } else
+	            size += getFolderSize(file);
+	    }
+	    return size;
 	}
 }

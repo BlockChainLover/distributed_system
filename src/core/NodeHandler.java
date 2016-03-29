@@ -125,13 +125,13 @@ public class NodeHandler implements Runnable {
 		for (Node n : nodes) {
 			int i = 0;
 			for (i = 0; i < ns.size(); i++) {
-				if (n.getBurden() > ns.get(i).getBurden()) {
+				if (n.getBurden() < ns.get(i).getBurden()) {
 					break;
 				}
 			}
 			ns.add(i, n);
 		}
-
+		
 		return ns;
 	}
 
