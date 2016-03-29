@@ -41,6 +41,9 @@ public class CommandHandler {
 			case "dfs-removeNode":
 				c = new DfsRemoveNode(split);
 				break;
+			case "dfs-lsNode":
+				c = new DfsLsNode(split);
+				break;
 			default:
 				break;
 			}
