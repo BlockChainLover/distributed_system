@@ -16,6 +16,14 @@ public class NodeHandler implements Runnable {
 	private NodeHandler() {
 		// create master Node
 		masterNode = new MasterNode();
+		
+		//check if main directory exist
+		File dir = new File(Core.ROOT);
+		if(!dir.exists()){
+			System.out.println("Root directory not found !");
+			dir.mkdirs();
+			System.out.println("Create the main directory.");
+		}
 	}
 
 	public static NodeHandler getInstance() {
@@ -37,7 +45,7 @@ public class NodeHandler implements Runnable {
 		if (args.length > 0) {
 			String dir = args[0];
 			// check if dir exist
-			File f = new File(dir);
+			File f = new File(Core.ROOT+File.separator+dir);
 			if (f.isDirectory()) {
 				// retrieve the id
 				dir = dir.replace("node", "");
@@ -52,7 +60,9 @@ public class NodeHandler implements Runnable {
 					return;
 				}
 				Directory directory = new Directory(dir);
-				nodes.add(new Node("" + id, directory));
+				Node n = new Node("" + id, directory);
+				nodes.add(n);
+				masterNode.refreshMap(n);
 			} else {
 				throw new NotDirectoryException("Directory " + dir + " not found !");
 			}

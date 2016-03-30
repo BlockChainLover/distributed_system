@@ -26,4 +26,10 @@ public class MasterNode {
 		System.out.println("Begin nodes scanning.");
 		List<Node> nodes = NodeHandler.getInstance().getNodes();
 	}
+	
+	public void refreshMap(Node node){
+		System.out.println(" Begin scanning on node : "+node.toString());
+		//TODO
+		System.err.println("TODO refresh map on a new node (in MasterNode)");
+	}
 }

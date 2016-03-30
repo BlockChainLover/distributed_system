@@ -44,6 +44,11 @@ public class CommandHandler {
 			case "dfs-lsNode":
 				c = new DfsLsNode(split);
 				break;
+			case "dfs-help":
+			case "help":
+			case "--help":
+				c = new DfsHelp(split);
+				break;
 			default:
 				break;
 			}
