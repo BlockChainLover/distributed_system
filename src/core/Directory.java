@@ -67,7 +67,6 @@ public class Directory {
 		InputStream is = null;
 		OutputStream os = null;
 		dest.getParentFile().mkdirs();
-		
 
 		is = new FileInputStream(src);
 		os = new FileOutputStream(dest);
@@ -98,16 +97,21 @@ public class Directory {
 	public long getBurden() {
 		return burden;
 	}
-	
-	public static long getFolderSize(File dir) {
-	    long size = 0;
-	    for (File file : dir.listFiles()) {
-	        if (file.isFile()) {
-	            // System.out.println(file.getName() + " " + file.length());
-	            size += file.length();
-	        } else
-	            size += getFolderSize(file);
-	    }
-	    return size;
+
+	public File getRoot() {
+		return root;
 	}
+
+	public static long getFolderSize(File dir) {
+		long size = 0;
+		for (File file : dir.listFiles()) {
+			if (file.isFile()) {
+				// System.out.println(file.getName() + " " + file.length());
+				size += file.length();
+			} else
+				size += getFolderSize(file);
+		}
+		return size;
+	}
+
 }
