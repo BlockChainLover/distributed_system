@@ -5,14 +5,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MasterNode {
+public class MasterNode implements Runnable{
 	private HashMap<String, ArrayList<Node>> map;
 
 	private int replicationRate = 2;
 
+	private Thread t;
+	
 	public MasterNode() {
 		map = new HashMap<>();
 		System.out.println("Master Node created.");
+		t = new Thread(this);
+		t.start();
 	}
 
 	public HashMap<String, ArrayList<Node>> getMap() {
@@ -94,5 +98,11 @@ public class MasterNode {
 			files.add(dir.getPath());
 		}
 		return files;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 }

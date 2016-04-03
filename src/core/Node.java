@@ -18,14 +18,14 @@ public class Node implements Runnable {
 		this.id = id;
 		dir = new Directory(Core.ROOT+File.pathSeparator+"node"+id);
 		init();
-		System.out.println("Node "+id+" created.");
+		System.out.println("Node "+id+" created. ["+dir.getRoot().getPath()+"]");
 	}
 	
 	public Node(String id, Directory dir){
 		this.id = id;
 		this.dir = dir;
 		init();
-		System.out.println("Node "+id+" created.");
+		System.out.println("Node "+id+" created. ["+dir.getRoot().getPath()+"]");
 	}
 	
 	private void init(){

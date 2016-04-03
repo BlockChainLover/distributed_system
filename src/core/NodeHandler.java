@@ -59,7 +59,7 @@ public class NodeHandler implements Runnable {
 					System.err.println("Node " + id + " already exist !");
 					return;
 				}
-				Directory directory = new Directory(dir);
+				Directory directory = new Directory(f.getPath());
 				Node n = new Node("" + id, directory);
 				nodes.add(n);
 				masterNode.refreshMap(n);
@@ -195,7 +195,7 @@ public class NodeHandler implements Runnable {
 			try {
 				addNode(c);
 			} catch (NotDirectoryException e) {
-				System.err.println("Can't add node " + e.getLocalizedMessage());
+				System.err.println(e.getLocalizedMessage());
 			}
 			return;
 		case "dfs-removeNode":

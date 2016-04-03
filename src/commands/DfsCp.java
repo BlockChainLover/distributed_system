@@ -21,7 +21,7 @@ public class DfsCp extends Command {
 
 	@Override
 	public void action(MasterNode masterNode) {
-		// TODO Auto-generated method stub
+		System.err.println("dfs-cp not developed");
 		
 	}
 
