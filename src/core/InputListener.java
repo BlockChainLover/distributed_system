@@ -1,5 +1,6 @@
 package core;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import commands.CommandHandler;
@@ -33,8 +34,12 @@ public class InputListener implements Runnable{
 	public void run() {
 		System.out.println("Start the inputListener.");
 		while(true){
+			try{
 			String s = sc.nextLine();
 			CommandHandler.getInstance().processCommand(s);
+			}catch(NoSuchElementException e){
+				
+			}
 		}
 	}
 

@@ -44,7 +44,7 @@ public class MasterNode implements Runnable{
 			//search if file already in the map
 			for(String file : fileList){
 				//need to remove the "id\" in the path
-				String s = file.substring(node.getId().length());
+				String s = file.substring((Core.ROOT+File.separator+"node"+node.getId()).length());
 				if( map.containsKey(s)){
 					//found this file
 					System.out.println("File "+s+" already in the map.");
