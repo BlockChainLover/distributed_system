@@ -23,7 +23,7 @@ public class DfsHelp extends Command{
 	public void action(MasterNode masterNode) {
 		System.out.println("Command available :");
 		System.out.println("\tdfs-add path/to/new/file file/to/cp");
-		System.out.println("\tdfs-ls ");
+		System.out.println("\tdfs-ls [-R] /path/to/show");
 		System.out.println("\tdfs-rm path/to/file");
 		System.out.println("\tdfs-lsNode [-l]");
 		System.out.println("\tdfs-createNode [link/path/to/dir]");
