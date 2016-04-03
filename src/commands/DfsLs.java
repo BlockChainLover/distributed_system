@@ -1,6 +1,11 @@
 package commands;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import core.MasterNode;
+import core.Node;
 
 public class DfsLs extends Command {
 
@@ -21,8 +26,13 @@ public class DfsLs extends Command {
 	
 	@Override
 	public void action(MasterNode masterNode) {
-		// TODO Auto-generated method stub
-		
+		System.err.println("TODO finish the dfs-ls : actualy not working !");
+		HashMap <String, ArrayList<Node>> map = masterNode.getMap();
+		for(Entry<String,ArrayList<Node>> e : map.entrySet()){
+			if(e.getKey().startsWith("\\")){
+				System.out.println(e.getKey());
+			}
+		}
 	}
 
 }

@@ -30,9 +30,6 @@ public class MasterNode {
 
 	public void refreshMap(Node node) {
 		System.out.println(" Begin scanning on node : " + node.toString());
-		// TODO
-		System.err.println("TODO refresh map on a new node (in MasterNode)");
-
 		File dir = node.getDirectory().getRoot();
 
 		ArrayList<String> fileList = recursivScan(dir);
@@ -42,18 +39,49 @@ public class MasterNode {
 		}else{
 			//search if file already in the map
 			for(String file : fileList){
-				if( map.containsKey(file)){
+				//need to remove the "id\" in the path
+				String s = file.substring(node.getId().length()+1);
+				if( map.containsKey(s)){
 					//found this file
 					//TODO check if the file is the same 
+					System.out.println("File "+s+" already in the map.");
+					if(checkFileSimilarities(s, node, map.get(s))){
+						System.out.println("File "+s+" is the same as the files in the map.");
+						map.get(s).add(node);
+					}else{
+						//delete ?
+						System.err.println("File "+s+" is not the same as files in the map !");
+					}
 					
-					map.get(file).add(node);
 				}else{
 					ArrayList<Node> n = new ArrayList<Node>();
 					n.add(node);
-					map.put(file, n);
+					System.out.println("Add file "+s+" to map");
+					map.put(s, n);
 				}
 			}
 		}
+	}
+
+	/**
+	 *  return true if the file is the same as files in the arrayList
+	 * @param file
+	 * @param node
+	 * @param arrayList
+	 * @return
+	 */
+	private boolean checkFileSimilarities(String file, Node node, ArrayList<Node> arrayList) {
+		//we suposed the file in the arrayList is the base
+		System.err.println("TODO Need to create the checkFileSimilarities");
+		File newFile = new File(node.getId()+File.separator+file);
+		
+		for(Node n : arrayList){
+			File f = new File(n.getId()+File.separator+file);
+			if(f.lastModified() == newFile.lastModified() && f.length() == newFile.length())
+				return false;
+		}
+		
+		return true;
 	}
 
 	public ArrayList<String> recursivScan(File dir) {
