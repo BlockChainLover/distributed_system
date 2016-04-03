@@ -40,16 +40,15 @@ public class MasterNode {
 			//search if file already in the map
 			for(String file : fileList){
 				//need to remove the "id\" in the path
-				String s = file.substring(node.getId().length()+1);
+				String s = file.substring(node.getId().length());
 				if( map.containsKey(s)){
 					//found this file
-					//TODO check if the file is the same 
 					System.out.println("File "+s+" already in the map.");
 					if(checkFileSimilarities(s, node, map.get(s))){
 						System.out.println("File "+s+" is the same as the files in the map.");
 						map.get(s).add(node);
 					}else{
-						//delete ?
+						//TODO delete ?
 						System.err.println("File "+s+" is not the same as files in the map !");
 					}
 					
@@ -72,7 +71,6 @@ public class MasterNode {
 	 */
 	private boolean checkFileSimilarities(String file, Node node, ArrayList<Node> arrayList) {
 		//we suposed the file in the arrayList is the base
-		System.err.println("TODO Need to create the checkFileSimilarities");
 		File newFile = new File(node.getId()+File.separator+file);
 		
 		for(Node n : arrayList){
