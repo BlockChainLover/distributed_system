@@ -32,7 +32,7 @@ public class DfsLs extends Command {
 		String path = "";
 
 		boolean recursiv = false;
-		boolean replication = true;
+		boolean replication = false;
 
 		for (String s : args) {
 			switch (s) {

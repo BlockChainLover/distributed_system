@@ -58,12 +58,14 @@ public class MasterNode implements Runnable {
 					} else {
 						// TODO delete ?
 						System.err.println("File " + s + " is not the same file as referenced in the map !");
+						
 						File f = new File(file);
 						if (f.delete()) {
 							System.out.println("File " + file + " deleted.");
 						} else {
 							System.err.println("Can't delete file " + file);
 						}
+						
 					}
 
 				} else {
@@ -86,11 +88,10 @@ public class MasterNode implements Runnable {
 	 */
 	private boolean checkFileSimilarities(String file, Node node, ArrayList<Node> arrayList) {
 		// we suposed the file in the arrayList is the base
-		File newFile = new File(node.getId() + File.separator + file);
-
+		File newFile = new File(Core.ROOT+File.separator+"node"+node.getId() + File.separator + file);
 		for (Node n : arrayList) {
-			File f = new File(n.getId() + File.separator + file);
-			if (f.lastModified() == newFile.lastModified() && f.length() == newFile.length())
+			File f = new File(Core.ROOT+File.separator+"node"+n.getId() + File.separator + file);
+			if (f.lastModified() != newFile.lastModified() || f.length() != newFile.length())
 				return false;
 		}
 
@@ -117,7 +118,7 @@ public class MasterNode implements Runnable {
 			if (e.getValue().size() < replicationRate) {
 				System.err.println("File " + e.getKey() + " not enougth replicated.");
 				List<Node> loadNode = NodeHandler.getInstance().getNodesByLoad();
-				
+
 				loadNode.removeAll(e.getValue()); // remove the same nodes
 
 				for (int i = e.getValue().size(); i < replicationRate && i < loadNode.size(); i++) {
@@ -125,7 +126,8 @@ public class MasterNode implements Runnable {
 						Node n = loadNode.get(i);
 						File f = e.getValue().get(0).getFile(e.getKey());
 						n.getDirectory().putFile(f, e.getKey(), f.lastModified());
-						System.out.println("Created file "+f.getName()+" on node "+n.getId());
+						System.out.println("Created file " + f.getName() + " on node " + n.getId());
+						e.getValue().add(n);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -133,8 +135,7 @@ public class MasterNode implements Runnable {
 				replication++;
 			}
 		}
-		
-		System.out.println("Check map and found "+replication+" file");
+		System.out.println("Check map and found " + replication + " file");
 	}
 
 	@Override
@@ -143,7 +144,6 @@ public class MasterNode implements Runnable {
 		while (true) {
 			try {
 				t.sleep(CHECK_TIME);
-				System.out.println("Check Map");
 				checkMap();
 
 			} catch (InterruptedException e) {
