@@ -1,17 +1,21 @@
 package core;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
-public class MasterNode implements Runnable{
+public class MasterNode implements Runnable {
+	private static final long CHECK_TIME = 20000;
+
 	private HashMap<String, ArrayList<Node>> map;
 
 	private int replicationRate = 2;
 
 	private Thread t;
-	
+
 	public MasterNode() {
 		map = new HashMap<>();
 		System.out.println("Master Node created.");
@@ -37,29 +41,35 @@ public class MasterNode implements Runnable{
 		File dir = node.getDirectory().getRoot();
 
 		ArrayList<String> fileList = recursivScan(dir);
-		
-		if(fileList.isEmpty()){
-			System.out.println("Node"+node.getId()+" is empty.");
-		}else{
-			//search if file already in the map
-			for(String file : fileList){
-				//need to remove the "id\" in the path
-				String s = file.substring((Core.ROOT+File.separator+"node"+node.getId()).length());
-				if( map.containsKey(s)){
-					//found this file
-					System.out.println("File "+s+" already in the map.");
-					if(checkFileSimilarities(s, node, map.get(s))){
-						System.out.println("File "+s+" is the same as the files in the map.");
+
+		if (fileList.isEmpty()) {
+			System.out.println("Node" + node.getId() + " is empty.");
+		} else {
+			// search if file already in the map
+			for (String file : fileList) {
+				// need to remove the "id\" in the path
+				String s = file.substring((Core.ROOT + File.separator + "node" + node.getId()).length());
+				if (map.containsKey(s)) {
+					// found this file
+					System.out.println("File " + s + " already in the map.");
+					if (checkFileSimilarities(s, node, map.get(s))) {
+						System.out.println("File " + s + " is the same as the files in the map.");
 						map.get(s).add(node);
-					}else{
-						//TODO delete ?
-						System.err.println("File "+s+" is not the same as files in the map !");
+					} else {
+						// TODO delete ?
+						System.err.println("File " + s + " is not the same file as referenced in the map !");
+						File f = new File(file);
+						if (f.delete()) {
+							System.out.println("File " + file + " deleted.");
+						} else {
+							System.err.println("Can't delete file " + file);
+						}
 					}
-					
-				}else{
+
+				} else {
 					ArrayList<Node> n = new ArrayList<Node>();
 					n.add(node);
-					System.out.println("Add file "+s+" to map");
+					System.out.println("Add file " + s + " to map");
 					map.put(s, n);
 				}
 			}
@@ -67,22 +77,23 @@ public class MasterNode implements Runnable{
 	}
 
 	/**
-	 *  return true if the file is the same as files in the arrayList
+	 * return true if the file is the same as files in the arrayList
+	 * 
 	 * @param file
 	 * @param node
 	 * @param arrayList
 	 * @return
 	 */
 	private boolean checkFileSimilarities(String file, Node node, ArrayList<Node> arrayList) {
-		//we suposed the file in the arrayList is the base
-		File newFile = new File(node.getId()+File.separator+file);
-		
-		for(Node n : arrayList){
-			File f = new File(n.getId()+File.separator+file);
-			if(f.lastModified() == newFile.lastModified() && f.length() == newFile.length())
+		// we suposed the file in the arrayList is the base
+		File newFile = new File(node.getId() + File.separator + file);
+
+		for (Node n : arrayList) {
+			File f = new File(n.getId() + File.separator + file);
+			if (f.lastModified() == newFile.lastModified() && f.length() == newFile.length())
 				return false;
 		}
-		
+
 		return true;
 	}
 
@@ -93,16 +104,53 @@ public class MasterNode implements Runnable{
 			for (File child : children) {
 				files.addAll(recursivScan(child));
 			}
-		}else{
-			System.out.println("Found file "+dir.getPath());
+		} else {
+			System.out.println("Found file " + dir.getPath());
 			files.add(dir.getPath());
 		}
 		return files;
 	}
 
+	public void checkMap() {
+		int replication = 0;
+		for (Entry<String, ArrayList<Node>> e : map.entrySet()) {
+			if (e.getValue().size() < replicationRate) {
+				System.err.println("File " + e.getKey() + " not enougth replicated.");
+				List<Node> loadNode = NodeHandler.getInstance().getNodesByLoad();
+				
+				loadNode.removeAll(e.getValue()); // remove the same nodes
+
+				for (int i = e.getValue().size(); i < replicationRate && i < loadNode.size(); i++) {
+					try {
+						Node n = loadNode.get(i);
+						File f = e.getValue().get(0).getFile(e.getKey());
+						n.getDirectory().putFile(f, e.getKey(), f.lastModified());
+						System.out.println("Created file "+f.getName()+" on node "+n.getId());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				replication++;
+			}
+		}
+		
+		System.out.println("Check map and found "+replication+" file");
+	}
+
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+
+		while (true) {
+			try {
+				t.sleep(CHECK_TIME);
+				System.out.println("Check Map");
+				checkMap();
+
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 }

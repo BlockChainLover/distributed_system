@@ -28,7 +28,7 @@ public class DfsHelp extends Command{
 		System.out.println("\tdfs-lsNode [-l]");
 		System.out.println("\tdfs-createNode [link/path/to/dir]");
 		System.out.println("\tdfs-mv");
-		System.out.println("\tdfs-removeNode nodeName");
+		System.out.println("\tdfs-removeNode [-r] nodeName");
 		
 		
 	}

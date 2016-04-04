@@ -14,9 +14,11 @@ public class Node implements Runnable {
 	
 	private long sleepTime = new Random().nextInt(10000);
 	
+	private boolean running = true;
+	
 	public Node(String id) throws NotDirectoryException{
 		this.id = id;
-		dir = new Directory(Core.ROOT+File.pathSeparator+"node"+id);
+		dir = new Directory(Core.ROOT+File.separator+"node"+id);
 		init();
 		System.out.println("Node "+id+" created. ["+dir.getRoot().getPath()+"]");
 	}
@@ -51,12 +53,12 @@ public class Node implements Runnable {
 	
 	public void stop(){
 		System.err.println("Hard stop the Node "+id);
-		t.stop();
+		running = false;
 	}
 	
 	public void run() {
 		System.out.println("Start the node "+id);
-		while(true){
+		while(running){
 			try {
 				t.sleep(sleepTime);
 			} catch (InterruptedException e) {
@@ -69,5 +71,10 @@ public class Node implements Runnable {
 	
 	public String toString(){
 		return "Node "+id+", size = "+getBurden();
+	}
+
+	public File getFile(String path) {
+		File f = new File(Core.ROOT+File.separator+"node"+id+path);
+		return f;
 	}
 }

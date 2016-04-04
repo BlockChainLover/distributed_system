@@ -32,43 +32,53 @@ public class DfsLs extends Command {
 		String path = "";
 
 		boolean recursiv = false;
+		boolean replication = true;
 
-		if (args.length == 0) {
-			System.err.println("dfs-ls with not args !");
-		} else if (args.length == 1) {
-			path = args[0];
-		} else {
-			switch (args[0]) {
+		for (String s : args) {
+			switch (s) {
 			case "-R":
 			case "-r":
 				recursiv = true;
-				path = args[1];
+				break;
+			case "-d":
+				replication = true;
 				break;
 			default:
-				System.err.println(args[0]+" not found as a dfs-ls internal argument.");
+				path = s;
 				break;
 			}
 		}
-		path += path.endsWith(File.separator) ? "" : File.separator;
 
+		if (path.isEmpty() || !path.endsWith(File.separator)) {
+			path += File.separator;
+		}
 		ArrayList<String> dir = new ArrayList<>();
 
 		for (Entry<String, ArrayList<Node>> e : map.entrySet()) {
 			String key = e.getKey();
+			boolean printed = false;
 			if (key.startsWith(path)) {
 				if (!key.substring(path.length()).contains(File.separator) || recursiv) {
-					System.out.println(e.getKey());
-				}else{
+					System.out.print(e.getKey());
+					printed = true;
+				} else {
 					// /images/toto.png
 					String dirName = key.substring(path.length());
 					dirName = dirName.substring(0, dirName.indexOf(File.separator));
-					dirName = File.separator+dirName;
-					
-					if(!dir.contains(dirName)){
-						System.out.println(dirName);
+					dirName = File.separator + dirName;
+
+					if (!dir.contains(dirName)) {
+						System.out.print(dirName);
+						printed = true;
 						dir.add(dirName);
 					}
 				}
+				if (replication && printed) {
+					System.out.print("\t\t " + e.getValue().size());
+				}
+
+				if (printed)
+					System.out.println();
 			}
 		}
 	}

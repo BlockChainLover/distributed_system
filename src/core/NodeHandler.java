@@ -3,9 +3,11 @@ package core;
 import java.io.File;
 import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import commands.Command;
+import commands.CommandHandler;
 
 public class NodeHandler implements Runnable {
 	private static NodeHandler instance;
@@ -13,17 +15,24 @@ public class NodeHandler implements Runnable {
 	private List<Node> nodes = new ArrayList<Node>();
 	private MasterNode masterNode;
 
+	private Thread thread;
+
+	private HashMap<Node, Integer> disconnedNodes = new HashMap<Node, Integer>();
+
+	private static final Integer MAX_CHECK = 1;
 	private NodeHandler() {
 		// create master Node
 		masterNode = new MasterNode();
-		
-		//check if main directory exist
+
+		// check if main directory exist
 		File dir = new File(Core.ROOT);
-		if(!dir.exists()){
+		if (!dir.exists()) {
 			System.out.println("Root directory not found !");
 			dir.mkdirs();
 			System.out.println("Create the main directory.");
 		}
+		thread = new Thread(this);
+		thread.start();
 	}
 
 	public static NodeHandler getInstance() {
@@ -45,7 +54,7 @@ public class NodeHandler implements Runnable {
 		if (args.length > 0) {
 			String dir = args[0];
 			// check if dir exist
-			File f = new File(Core.ROOT+File.separator+dir);
+			File f = new File(Core.ROOT + File.separator + dir);
 			if (f.isDirectory()) {
 				// retrieve the id
 				dir = dir.replace("node", "");
@@ -100,7 +109,7 @@ public class NodeHandler implements Runnable {
 			} catch (NumberFormatException e) {
 				System.err.println("Can't find node with id " + args[0] + " !");
 			}
-		}else if (args.length == 2) {
+		} else if (args.length == 2) {
 			try {
 				int id = Integer.parseInt(args[1].replace("node", ""));
 				int i = 0;
@@ -113,6 +122,7 @@ public class NodeHandler implements Runnable {
 
 				if (args.length > 1) {
 					switch (args[0]) {
+					case "-R":
 					case "-r":
 						System.err.println("Remove the node from the node list !");
 						nodes.remove(i);
@@ -124,7 +134,7 @@ public class NodeHandler implements Runnable {
 			} catch (NumberFormatException e) {
 				System.err.println("Can't find node with id " + args[1] + " !");
 			}
-		}else{
+		} else {
 			System.err.println("Command not valid !");
 		}
 	}
@@ -141,7 +151,7 @@ public class NodeHandler implements Runnable {
 			}
 			ns.add(i, n);
 		}
-		
+
 		return ns;
 	}
 
@@ -153,7 +163,7 @@ public class NodeHandler implements Runnable {
 				list = getNodesByLoad();
 				System.out.println(" -Node-\t-Size- \t\t -Running--");
 				for (Node n : list) {
-					System.out.println(" node" + n.getId() + "\t " + n.getBurden() + " B \t "+n.isAlive());
+					System.out.println(" node" + n.getId() + "\t " + n.getBurden() + " B \t " + n.isAlive());
 				}
 				break;
 			default:
@@ -186,6 +196,36 @@ public class NodeHandler implements Runnable {
 
 	public void run() {
 		// check if nodes crashed bandicoot
+		while (true) {
+			// check if node crashed
+			for (Node n : nodes) {
+				try {
+					if (!n.isAlive()) {
+						System.err.println(n.getId() + "is not alive.");
+						Integer check = disconnedNodes.get(n);
+						if (check != null) {
+							// remove
+							if (check >= MAX_CHECK) {
+								disconnedNodes.remove(n);
+								CommandHandler.getInstance().processCommand("dfs-removeNode -R " + n.getId());
+							}
+						} else {
+							disconnedNodes.put(n, 1);
+						}
+					}
+				} catch (Exception e) {
+					System.err.println("Node " + n.getId() + " doesn't respond !");
+				}
+			}
+
+			try {
+				thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 	}
 
 	public void executeCommand(Command c) {

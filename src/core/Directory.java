@@ -23,9 +23,9 @@ public class Directory {
 			root.mkdir();
 	}
 
-	public boolean putFile(String path, File file) throws IOException {
+	public boolean putFile(File file, String path, Long time) throws IOException {
 		File dest = new File(root, path);
-		return copyFile(file, dest);
+		return copyFile(file, dest, time);
 	}
 
 	public boolean createDir(String path) {
@@ -60,10 +60,10 @@ public class Directory {
 	public boolean copyFile(String source, String destination) throws IOException {
 		File src = new File(root, source);
 		File dest = new File(root, destination);
-		return copyFile(src, dest);
+		return copyFile(src, dest, null);
 	}
 
-	public boolean copyFile(File src, File dest) throws IOException {
+	public boolean copyFile(File src, File dest, Long time) throws IOException {
 		InputStream is = null;
 		OutputStream os = null;
 		dest.getParentFile().mkdirs();
@@ -77,6 +77,8 @@ public class Directory {
 		}
 		is.close();
 		os.close();
+		if (time != null)
+			dest.setLastModified(time);
 		burden = getFolderSize(root);
 		return true;
 	}

@@ -32,16 +32,17 @@ public class DfsAdd extends Command {
 		List<Node> loadNode = NodeHandler.getInstance().getNodesByLoad();
 
 		ArrayList<Node> nodes = new ArrayList<Node>();
+		long time = System.currentTimeMillis();
 		try {
 			// add file on nodes
 			for (int i = 0; i < masterNode.getReplicationRate() && i < loadNode.size(); i++) {
-				loadNode.get(i).getDirectory().putFile(getArgs()[0], new File(getArgs()[1]));
+				loadNode.get(i).getDirectory().putFile(new File(getArgs()[0]), getArgs()[1], time);
 				nodes.add(loadNode.get(i));
 			}
 
 			// if ok add file to masterNode
-			masterNode.getMap().put(getArgs()[0], nodes);
-			System.out.println("File " + getArgs()[1] + " added successfully at position " + getArgs()[0]);
+			masterNode.getMap().put(getArgs()[1], nodes);
+			System.out.println("File " + getArgs()[0] + " added successfully at position " + getArgs()[1]);
 		} catch (IOException e) {
 			System.err.println(e.getLocalizedMessage());
 			// delete files
