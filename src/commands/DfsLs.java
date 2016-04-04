@@ -74,7 +74,13 @@ public class DfsLs extends Command {
 					}
 				}
 				if (replication && printed) {
-					System.out.print("\t\t " + e.getValue().size());
+					String nodes = "";
+					for(int i = 0; i < e.getValue().size(); i++){
+						if(i > 0)
+							nodes +=",";
+						nodes += ""+e.getValue().get(i).getId();
+					}
+					System.out.print("\t\t " + e.getValue().size()+"\t\t ["+nodes+"]");
 				}
 
 				if (printed)

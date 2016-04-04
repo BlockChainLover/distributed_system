@@ -4,7 +4,9 @@ import java.io.File;
 import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import commands.Command;
 import commands.CommandHandler;
@@ -22,6 +24,7 @@ public class NodeHandler implements Runnable {
 	private static final Integer MAX_CHECK = 1;
 
 	private static final long NODE_HANDLER_SLEEP_TIME = 5000;
+
 	private NodeHandler() {
 		// create master Node
 		masterNode = new MasterNode();
@@ -127,7 +130,7 @@ public class NodeHandler implements Runnable {
 					case "-R":
 					case "-r":
 						System.err.println("Remove the node from the node list !");
-						//remove the node from the map
+						// remove the node from the map
 						masterNode.removeNode(nodes.get(i));
 						nodes.remove(i);
 						break;
@@ -213,6 +216,8 @@ public class NodeHandler implements Runnable {
 							if (check >= MAX_CHECK) {
 								disconnedNodes.remove(n);
 								commands.add("dfs-removeNode -R " + n.getId());
+							} else {
+								disconnedNodes.put(n, check++);
 							}
 						} else {
 							disconnedNodes.put(n, 1);
@@ -222,7 +227,21 @@ public class NodeHandler implements Runnable {
 					System.err.println("Node " + n.getId() + " doesn't respond !");
 				}
 			}
-			for(String s : commands){
+
+			// check node with wes it the disconnectedNodes but cames back
+			Iterator it = disconnedNodes.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry e = (Entry) it.next();
+				if (nodes.get(nodes.indexOf(e.getKey())).isAlive()) {
+					masterNode.refreshMap((Node)e.getKey());
+					// remove from disconnectedNode
+					disconnedNodes.remove(e.getKey());
+					//need to rescan the node
+
+				}
+			}
+
+			for (String s : commands) {
 				CommandHandler.getInstance().processCommand(s);
 			}
 
