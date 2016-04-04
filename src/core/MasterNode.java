@@ -127,7 +127,7 @@ public class MasterNode implements Runnable {
 						File f = e.getValue().get(0).getFile(e.getKey());
 						n.getDirectory().putFile(f, e.getKey(), f.lastModified());
 						System.out.println("Created file " + f.getName() + " on node " + n.getId());
-						e.getValue().add(n);
+						e.getValue().add(n);//add the value t
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -135,7 +135,7 @@ public class MasterNode implements Runnable {
 				replication++;
 			}
 		}
-		System.out.println("Check map and found " + replication + " file");
+		//System.out.println("Check map and found " + replication + " file");
 	}
 
 	@Override
@@ -152,5 +152,14 @@ public class MasterNode implements Runnable {
 			}
 		}
 
+	}
+
+	public void removeNode(Node node) {
+		for (Entry<String, ArrayList<Node>> e : map.entrySet()) {
+			ArrayList<Node> nodes = e.getValue();
+			if(nodes.contains(node)){
+				nodes.remove(node);
+			}
+		}
 	}
 }

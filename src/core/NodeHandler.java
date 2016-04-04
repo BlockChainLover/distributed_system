@@ -20,6 +20,8 @@ public class NodeHandler implements Runnable {
 	private HashMap<Node, Integer> disconnedNodes = new HashMap<Node, Integer>();
 
 	private static final Integer MAX_CHECK = 1;
+
+	private static final long NODE_HANDLER_SLEEP_TIME = 5000;
 	private NodeHandler() {
 		// create master Node
 		masterNode = new MasterNode();
@@ -125,6 +127,8 @@ public class NodeHandler implements Runnable {
 					case "-R":
 					case "-r":
 						System.err.println("Remove the node from the node list !");
+						//remove the node from the map
+						masterNode.removeNode(nodes.get(i));
 						nodes.remove(i);
 						break;
 					default:
@@ -197,6 +201,7 @@ public class NodeHandler implements Runnable {
 	public void run() {
 		// check if nodes crashed bandicoot
 		while (true) {
+			ArrayList<String> commands = new ArrayList<>();
 			// check if node crashed
 			for (Node n : nodes) {
 				try {
@@ -207,7 +212,7 @@ public class NodeHandler implements Runnable {
 							// remove
 							if (check >= MAX_CHECK) {
 								disconnedNodes.remove(n);
-								CommandHandler.getInstance().processCommand("dfs-removeNode -R " + n.getId());
+								commands.add("dfs-removeNode -R " + n.getId());
 							}
 						} else {
 							disconnedNodes.put(n, 1);
@@ -217,9 +222,12 @@ public class NodeHandler implements Runnable {
 					System.err.println("Node " + n.getId() + " doesn't respond !");
 				}
 			}
+			for(String s : commands){
+				CommandHandler.getInstance().processCommand(s);
+			}
 
 			try {
-				thread.sleep(5000);
+				thread.sleep(NODE_HANDLER_SLEEP_TIME);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
