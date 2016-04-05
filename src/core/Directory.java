@@ -28,11 +28,11 @@ public class Directory {
 		File dest = new File(root, path);
 		return copyFile(file, dest, time);
 	}
-	
+
 	public boolean retrieveFile(String source, File dest) throws IOException {
 		File src = new File(root, source);
 		return copyFile(src, dest, src.lastModified());
-		
+
 	}
 
 	public boolean createDir(String path) {
@@ -73,9 +73,13 @@ public class Directory {
 	public boolean copyFile(File src, File dest, Long time) throws IOException {
 		InputStream is = null;
 		OutputStream os = null;
-		if(dest.exists())
-			throw new FileAlreadyExistsException("Destination file " + dest.getName() + "already exists");
-		dest.getParentFile().mkdirs();
+		if (dest.exists())
+			throw new FileAlreadyExistsException("Destination file " + dest.getName() + " already exists");
+		try {
+			dest.getParentFile().mkdirs();
+		} catch (NullPointerException e) {
+			dest.createNewFile();
+		}
 
 		is = new FileInputStream(src);
 		os = new FileOutputStream(dest);

@@ -29,12 +29,13 @@ public class DfsGet extends Command {
 		ArrayList<Node> nodes ;
 		nodes = masterNode.getMap().get(getArgs()[0]);
 		if(nodes == null)
-			System.err.println(getArgs()[0] + "does not exist");
+			System.err.println(getArgs()[0] + " does not exist");
 		else{
 			for(Node n : nodes){
 				try {
-					//TODO chose policy when file exists
 					n.getDirectory().retrieveFile(getArgs()[0], new File(getArgs()[1]));
+					System.out.println(getArgs()[0] + " retrieved to " + getArgs()[1]);
+					break;
 				} catch (IOException e) {
 					System.err.println(e.getMessage());
 				}

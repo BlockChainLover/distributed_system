@@ -35,14 +35,19 @@ public class DfsAdd extends Command {
 		long time = System.currentTimeMillis();
 		try {
 			// add file on nodes
+			boolean success = true;
 			for (int i = 0; i < masterNode.getReplicationRate() && i < loadNode.size(); i++) {
-				loadNode.get(i).getDirectory().putFile(new File(getArgs()[0]), getArgs()[1], time);
+				success = success && loadNode.get(i).getDirectory().putFile(new File(getArgs()[0]), getArgs()[1], time);
 				nodes.add(loadNode.get(i));
 			}
 
 			// if ok add file to masterNode
-			masterNode.getMap().put(getArgs()[1], nodes);
+			String path = getArgs()[1];
+			if (!path.startsWith(File.separator))
+				path = File.separator + path;
+			masterNode.getMap().put(path, nodes);
 			System.out.println("File " + getArgs()[0] + " added successfully at position " + getArgs()[1]);
+
 		} catch (IOException e) {
 			System.err.println(e.getLocalizedMessage());
 			// delete files
@@ -54,7 +59,7 @@ public class DfsAdd extends Command {
 					System.err.println(e1.getLocalizedMessage());
 				}
 			}
-		}catch(IndexOutOfBoundsException e){
+		} catch (IndexOutOfBoundsException e) {
 			System.err.println("Not enough arguments !");
 		}
 

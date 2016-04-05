@@ -8,36 +8,39 @@ import core.Node;
 
 public class DfsRm extends Command {
 
-	public DfsRm(String args[]){
+	public DfsRm(String args[]) {
 		setCommandId("dfs-rm");
 		String arguments[];
 		int ind = 0;
-		if(args.length > 0)
-			if(args[0].equals(getCommandId())){
+		if (args.length > 0)
+			if (args[0].equals(getCommandId())) {
 				ind = 1;
 			}
-		arguments = new String[args.length-ind];
-		for(int i = 0 ; i < arguments.length ; i++){
-			arguments[i] = args[i+ind];
+		arguments = new String[args.length - ind];
+		for (int i = 0; i < arguments.length; i++) {
+			arguments[i] = args[i + ind];
 		}
 		this.setArgs(arguments);
 	}
-	
+
 	@Override
 	public void action(MasterNode masterNode) {
-		ArrayList<Node> nodes ;
+		ArrayList<Node> nodes;
 		nodes = masterNode.getMap().get(getArgs()[0]);
-		if(nodes == null)
-			System.err.println(getArgs()[0] + "does not exist");
-		else{
-			for(Node n : nodes){
-				try {
+		if (nodes == null)
+			System.err.println(getArgs()[0] + " does not exist");
+		else {
+			try {
+				for (Node n : nodes) {
+
 					n.getDirectory().deleteFile(getArgs()[0]);
-				} catch (FileSystemException e) {
-					System.err.println(e.getMessage());
+
 				}
+				masterNode.getMap().remove(getArgs()[0]);
+				System.out.println(getArgs()[0] + " removed");
+			} catch (FileSystemException e) {
+				System.err.println(e.getMessage());
 			}
-			masterNode.getMap().remove(getArgs()[0]);
 		}
 	}
 

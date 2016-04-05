@@ -256,7 +256,7 @@ public class NodeHandler implements Runnable {
 	}
 
 	public void executeCommand(Command c) {
-		System.out.println("Execute the command " + c.getCommandId());
+		//System.out.println("Execute the command " + c.getCommandId());
 		switch (c.getCommandId()) {
 		case "dfs-createNode":
 			try {

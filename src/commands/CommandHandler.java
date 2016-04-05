@@ -23,6 +23,9 @@ public class CommandHandler {
 			case "dfs-add":
 				c = new DfsAdd(split);
 				break;
+			case "dfs-get":
+				c = new DfsGet(split);
+				break;
 			case "dfs-rm":
 				c = new DfsRm(split);
 				break;
