@@ -59,6 +59,7 @@ public class DfsLs extends Command {
 		for (Entry<String, ArrayList<Node>> e : map.entrySet()) {
 			String key = e.getKey();
 			boolean printed = false;
+			boolean isDir = false;
 			if (key.startsWith(path)) {
 				if (!key.substring(path.length()).contains(File.separator) || recursiv) {
 					System.out.print(e.getKey());
@@ -72,10 +73,11 @@ public class DfsLs extends Command {
 					if (!dir.contains(dirName)) {
 						System.out.print(dirName);
 						printed = true;
+						isDir = true;
 						dir.add(dirName);
 					}
 				}
-				if (replication && printed) {
+				if (replication && printed && !isDir) {
 					String nodes = "";
 					for(int i = 0; i < e.getValue().size(); i++){
 						if(i > 0)
