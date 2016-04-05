@@ -6,6 +6,7 @@ import java.nio.file.FileSystemException;
 import java.util.ArrayList;
 import java.util.List;
 
+import core.Core;
 import core.MasterNode;
 import core.Node;
 import core.NodeHandler;
@@ -27,27 +28,23 @@ public class DfsAdd extends Command {
 		this.setArgs(arguments);
 	}
 
-	@Override
-	public void action(MasterNode masterNode) {
-		List<Node> loadNode = NodeHandler.getInstance().getNodesByLoad();
-
+	private void addFile(File src, String dest, MasterNode masterNode) {
 		ArrayList<Node> nodes = new ArrayList<Node>();
-		long time = System.currentTimeMillis();
 		try {
+			List<Node> loadNode = NodeHandler.getInstance().getNodesByLoad();
+			long time = System.currentTimeMillis();
 			// add file on nodes
-			boolean success = true;
+
 			for (int i = 0; i < masterNode.getReplicationRate() && i < loadNode.size(); i++) {
-				success = success && loadNode.get(i).getDirectory().putFile(new File(getArgs()[0]), getArgs()[1], time);
+				loadNode.get(i).getDirectory().putFile(src, dest, time);
 				nodes.add(loadNode.get(i));
 			}
 
 			// if ok add file to masterNode
-			String path = getArgs()[1];
+			String path = dest;
 			if (!path.startsWith(File.separator))
 				path = File.separator + path;
 			masterNode.getMap().put(path, nodes);
-			System.out.println("File " + getArgs()[0] + " added successfully at position " + getArgs()[1]);
-
 		} catch (IOException e) {
 			System.err.println(e.getLocalizedMessage());
 			// delete files
@@ -62,6 +59,37 @@ public class DfsAdd extends Command {
 		} catch (IndexOutOfBoundsException e) {
 			System.err.println("Not enough arguments !");
 		}
+	}
+
+	private void addDirectory(File dir, String destDir, MasterNode masterNode) {
+		ArrayList<String> fileList = masterNode.recursivScan(dir);
+		if (fileList.isEmpty()) {
+			System.out.println(dir.getPath() + " is empty.");
+		} else {
+			// search if file already in the map
+			for (String file : fileList) {
+				// need to remove the "id\" in the path
+				String s = file.substring(dir.getPath().length());
+				s=destDir+s;
+				addFile(new File(file), s, masterNode);
+			}
+		}
+	}
+
+	@Override
+	public void action(MasterNode masterNode) {
+		File file = new File(getArgs()[0]);
+		
+		if(file.isFile()){
+			addFile(file, getArgs()[1], masterNode);
+			System.out.println(getArgs()[0] + " added successfully at position " + getArgs()[1]);
+		}else if(file.isDirectory()){
+			addDirectory(file, getArgs()[1], masterNode);
+			System.out.println(getArgs()[0] + " added successfully at position " + getArgs()[1]);
+		}else{
+			System.out.println();
+		}
+		
 
 		// if not delete file on nodes
 	}

@@ -51,9 +51,9 @@ public class MasterNode implements Runnable {
 				String s = file.substring((Core.ROOT + File.separator + "node" + node.getId()).length());
 				if (map.containsKey(s)) {
 					// found this file
-					System.out.println("File " + s + " already in the map.");
+					//System.out.println("File " + s + " already in the map.");
 					if (checkFileSimilarities(s, node, map.get(s))) {
-						System.out.println("File " + s + " is the same as the files in the map.");
+						//System.out.println("File " + s + " is the same as the files in the map.");
 						map.get(s).add(node);
 					} else {
 						// TODO delete ?
@@ -61,7 +61,7 @@ public class MasterNode implements Runnable {
 
 						File f = new File(file);
 						if (f.delete()) {
-							System.out.println("File " + file + " deleted.");
+							//System.out.println("File " + file + " deleted.");
 						} else {
 							System.err.println("Can't delete file " + file);
 						}
@@ -75,7 +75,7 @@ public class MasterNode implements Runnable {
 					} else {
 						ArrayList<Node> n = new ArrayList<Node>();
 						n.add(node);
-						System.out.println("Add file " + s + " to map");
+						//System.out.println("Add file " + s + " to map");
 						map.put(s, n);
 					}
 				}
@@ -111,7 +111,7 @@ public class MasterNode implements Runnable {
 				files.addAll(recursivScan(child));
 			}
 		} else {
-			System.out.println("Found file " + dir.getPath());
+			//System.out.println("Found file " + dir.getPath());
 			files.add(dir.getPath());
 		}
 		return files;
