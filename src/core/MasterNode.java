@@ -36,7 +36,7 @@ public class MasterNode implements Runnable {
 		List<Node> nodes = NodeHandler.getInstance().getNodes();
 	}
 
-	public void refreshMap(Node node) {
+	public void refreshMap(Node node, boolean delete) {
 		System.out.println(" Begin scanning on node : " + node.toString());
 		File dir = node.getDirectory().getRoot();
 
@@ -58,21 +58,26 @@ public class MasterNode implements Runnable {
 					} else {
 						// TODO delete ?
 						System.err.println("File " + s + " is not the same file as referenced in the map !");
-						
+
 						File f = new File(file);
 						if (f.delete()) {
 							System.out.println("File " + file + " deleted.");
 						} else {
 							System.err.println("Can't delete file " + file);
 						}
-						
+
 					}
 
 				} else {
-					ArrayList<Node> n = new ArrayList<Node>();
-					n.add(node);
-					System.out.println("Add file " + s + " to map");
-					map.put(s, n);
+					if (delete) {
+						File f = new File(file);
+						f.delete();
+					} else {
+						ArrayList<Node> n = new ArrayList<Node>();
+						n.add(node);
+						System.out.println("Add file " + s + " to map");
+						map.put(s, n);
+					}
 				}
 			}
 		}
@@ -88,9 +93,9 @@ public class MasterNode implements Runnable {
 	 */
 	private boolean checkFileSimilarities(String file, Node node, ArrayList<Node> arrayList) {
 		// we suposed the file in the arrayList is the base
-		File newFile = new File(Core.ROOT+File.separator+"node"+node.getId() + File.separator + file);
+		File newFile = new File(Core.ROOT + File.separator + "node" + node.getId() + File.separator + file);
 		for (Node n : arrayList) {
-			File f = new File(Core.ROOT+File.separator+"node"+n.getId() + File.separator + file);
+			File f = new File(Core.ROOT + File.separator + "node" + n.getId() + File.separator + file);
 			if (f.lastModified() != newFile.lastModified() || f.length() != newFile.length())
 				return false;
 		}
@@ -127,7 +132,7 @@ public class MasterNode implements Runnable {
 						File f = e.getValue().get(0).getFile(e.getKey());
 						n.getDirectory().putFile(f, e.getKey(), f.lastModified());
 						System.out.println("Created file " + f.getName() + " on node " + n.getId());
-						e.getValue().add(n);//add the value t
+						e.getValue().add(n);// add the value t
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -135,7 +140,7 @@ public class MasterNode implements Runnable {
 				replication++;
 			}
 		}
-		//System.out.println("Check map and found " + replication + " file");
+		// System.out.println("Check map and found " + replication + " file");
 	}
 
 	@Override
@@ -157,7 +162,7 @@ public class MasterNode implements Runnable {
 	public void removeNode(Node node) {
 		for (Entry<String, ArrayList<Node>> e : map.entrySet()) {
 			ArrayList<Node> nodes = e.getValue();
-			if(nodes.contains(node)){
+			if (nodes.contains(node)) {
 				nodes.remove(node);
 			}
 		}

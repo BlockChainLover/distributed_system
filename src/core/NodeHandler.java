@@ -76,7 +76,7 @@ public class NodeHandler implements Runnable {
 				Directory directory = new Directory(f.getPath());
 				Node n = new Node("" + id, directory);
 				nodes.add(n);
-				masterNode.refreshMap(n);
+				masterNode.refreshMap(n, false);
 			} else {
 				throw new NotDirectoryException("Directory " + dir + " not found !");
 			}
@@ -233,7 +233,7 @@ public class NodeHandler implements Runnable {
 			while (it.hasNext()) {
 				Entry e = (Entry) it.next();
 				if (nodes.get(nodes.indexOf(e.getKey())).isAlive()) {
-					masterNode.refreshMap((Node)e.getKey());
+					masterNode.refreshMap((Node)e.getKey(), true);
 					// remove from disconnectedNode
 					disconnedNodes.remove(e.getKey());
 					//need to rescan the node
