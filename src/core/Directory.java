@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystemException;
 import java.nio.file.NotDirectoryException;
 
@@ -26,6 +27,12 @@ public class Directory {
 	public boolean putFile(File file, String path, Long time) throws IOException {
 		File dest = new File(root, path);
 		return copyFile(file, dest, time);
+	}
+	
+	public boolean retrieveFile(String source, File dest) throws IOException {
+		File src = new File(root, source);
+		return copyFile(src, dest, src.lastModified());
+		
 	}
 
 	public boolean createDir(String path) {
@@ -66,6 +73,8 @@ public class Directory {
 	public boolean copyFile(File src, File dest, Long time) throws IOException {
 		InputStream is = null;
 		OutputStream os = null;
+		if(dest.exists())
+			throw new FileAlreadyExistsException("Destination file " + dest.getName() + "already exists");
 		dest.getParentFile().mkdirs();
 
 		is = new FileInputStream(src);
@@ -83,6 +92,7 @@ public class Directory {
 		return true;
 	}
 
+	@Deprecated
 	public boolean copyDirectory(String source, String destination) {
 		return true;
 	}
@@ -92,6 +102,7 @@ public class Directory {
 		return tmp && deleteFile(source);
 	}
 
+	@Deprecated
 	public boolean moveDirectory(String source, String dest) {
 		return true;
 	}
@@ -115,5 +126,4 @@ public class Directory {
 		}
 		return size;
 	}
-
 }

@@ -27,10 +27,10 @@ public class DfsHelp extends Command{
 		System.out.println("\tdfs-rm path/to/file");
 		System.out.println("\tdfs-lsNode [-l]");
 		System.out.println("\tdfs-createNode [link/path/to/dir]");
-		System.out.println("\tdfs-mv");
+		System.out.println("\tdfs-mv /source/path /dest/path");
 		System.out.println("\tdfs-removeNode [-r] nodeName");
-		
-		
+		System.out.println("\tdfs-rm /path/to/delete");
+		System.out.println("\tdfs-get /path/to/file /file/to/get");
 	}
 	
 }

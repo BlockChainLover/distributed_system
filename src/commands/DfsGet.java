@@ -1,15 +1,16 @@
 package commands;
 
-import java.nio.file.FileSystemException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import core.MasterNode;
 import core.Node;
 
-public class DfsRm extends Command {
+public class DfsGet extends Command {
 
-	public DfsRm(String args[]){
-		setCommandId("dfs-rm");
+	public DfsGet(String args[]){
+		setCommandId("dfs-get");
 		String arguments[];
 		int ind = 0;
 		if(args.length > 0)
@@ -32,13 +33,12 @@ public class DfsRm extends Command {
 		else{
 			for(Node n : nodes){
 				try {
-					n.getDirectory().deleteFile(getArgs()[0]);
-				} catch (FileSystemException e) {
+					//TODO chose policy when file exists
+					n.getDirectory().retrieveFile(getArgs()[0], new File(getArgs()[1]));
+				} catch (IOException e) {
 					System.err.println(e.getMessage());
 				}
 			}
-			masterNode.getMap().remove(getArgs()[0]);
 		}
 	}
-
 }
