@@ -22,6 +22,7 @@ public class Directory {
 			throw new NotDirectoryException("");
 		else if (!root.exists())
 			root.mkdir();
+		burden = getFolderSize(root);
 	}
 
 	public boolean putFile(File file, String path, Long time) throws IOException {

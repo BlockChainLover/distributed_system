@@ -3,7 +3,9 @@ package commands;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import core.MasterNode;
 import core.Node;
@@ -27,7 +29,7 @@ public class DfsLs extends Command {
 
 	@Override
 	public void action(MasterNode masterNode) {
-		HashMap<String, ArrayList<Node>> map = masterNode.getMap();
+		Map<String, ArrayList<Node>> map = new TreeMap<>(masterNode.getMap());
 		String[] args = this.getArgs();
 		String path = "";
 

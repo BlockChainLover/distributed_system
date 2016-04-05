@@ -22,15 +22,15 @@ public class DfsHelp extends Command{
 	@Override
 	public void action(MasterNode masterNode) {
 		System.out.println("Command available :");
-		System.out.println("\tdfs-add path/to/new/file file/to/cp");
-		System.out.println("\tdfs-ls [-R] /path/to/show");
+		System.out.println("\tdfs-add file/to/cp new/file/in/dfs ");
+		System.out.println("\tdfs-ls [-R] [-d] /path/to/show");
 		System.out.println("\tdfs-rm path/to/file");
 		System.out.println("\tdfs-lsNode [-l]");
-		System.out.println("\tdfs-createNode [link/path/to/dir]");
+		System.out.println("\tdfs-createNode [path/to/dfs/nodeFolder]");
 		System.out.println("\tdfs-mv /source/path /dest/path");
 		System.out.println("\tdfs-removeNode [-r] nodeName");
 		System.out.println("\tdfs-rm /path/to/delete");
-		System.out.println("\tdfs-get /path/to/file /file/to/get");
+		System.out.println("\tdfs-get /file/in/dfs /path/on/local/system");
 	}
 	
 }
