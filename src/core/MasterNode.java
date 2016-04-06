@@ -3,27 +3,30 @@ package core;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MasterNode implements Runnable {
 	private static final long CHECK_TIME = 20000;
 
-	private HashMap<String, ArrayList<Node>> map;
+	private ConcurrentHashMap<String, ArrayList<Node>> map;
 
-	private int replicationRate = 2;
+	private int replicationRate = 3;
 
 	private Thread t;
 
 	public MasterNode() {
-		map = new HashMap<>();
+		map = new ConcurrentHashMap<String, ArrayList<Node>>();
 		System.out.println("Master Node created.");
 		t = new Thread(this);
 		t.start();
 	}
 
-	public HashMap<String, ArrayList<Node>> getMap() {
+	public ConcurrentHashMap<String, ArrayList<Node>> getMap() {
 		return map;
 	}
 
@@ -51,9 +54,10 @@ public class MasterNode implements Runnable {
 				String s = file.substring((Core.ROOT + File.separator + "node" + node.getId()).length());
 				if (map.containsKey(s)) {
 					// found this file
-					//System.out.println("File " + s + " already in the map.");
+					// System.out.println("File " + s + " already in the map.");
 					if (checkFileSimilarities(s, node, map.get(s))) {
-						//System.out.println("File " + s + " is the same as the files in the map.");
+						// System.out.println("File " + s +
+						// " is the same as the files in the map.");
 						map.get(s).add(node);
 					} else {
 						// TODO delete ?
@@ -61,7 +65,7 @@ public class MasterNode implements Runnable {
 
 						File f = new File(file);
 						if (f.delete()) {
-							//System.out.println("File " + file + " deleted.");
+							// System.out.println("File " + file + " deleted.");
 						} else {
 							System.err.println("Can't delete file " + file);
 						}
@@ -75,7 +79,7 @@ public class MasterNode implements Runnable {
 					} else {
 						ArrayList<Node> n = new ArrayList<Node>();
 						n.add(node);
-						//System.out.println("Add file " + s + " to map");
+						// System.out.println("Add file " + s + " to map");
 						map.put(s, n);
 					}
 				}
@@ -111,7 +115,7 @@ public class MasterNode implements Runnable {
 				files.addAll(recursivScan(child));
 			}
 		} else {
-			//System.out.println("Found file " + dir.getPath());
+			// System.out.println("Found file " + dir.getPath());
 			files.add(dir.getPath());
 		}
 		return files;
@@ -119,7 +123,9 @@ public class MasterNode implements Runnable {
 
 	public void checkMap() {
 		int replication = 0;
-		for (Entry<String, ArrayList<Node>> e : map.entrySet()) {
+		Iterator it = map.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, ArrayList<Node>> e = (Entry<String, ArrayList<Node>>) it.next();
 			if (e.getValue().size() < replicationRate) {
 				System.err.println("File " + e.getKey() + " not enougth replicated.");
 				List<Node> loadNode = NodeHandler.getInstance().getNodesByLoad();
@@ -131,7 +137,8 @@ public class MasterNode implements Runnable {
 						Node n = loadNode.get(i);
 						File f = e.getValue().get(0).getFile(e.getKey());
 						n.getDirectory().putFile(f, e.getKey(), f.lastModified());
-						System.out.println("Created file " + f.getName() + " on node " + n.getId());
+						// System.out.println("Created file " + f.getName() +
+						// " on node " + n.getId());
 						e.getValue().add(n);// add the value t
 					} catch (IOException e1) {
 						e1.printStackTrace();
